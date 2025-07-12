@@ -1,0 +1,25 @@
+{
+  "name": "nft-marketplace-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for NFT Marketplace",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "node": "hardhat node",
+    "node:reset": "node scripts/reset-node.js",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "deploy:fresh": "hardhat run scripts/deploy-fresh.js --network localhost",
+    "deploy:fresh:sepolia": "hardhat run scripts/deploy-fresh.js --network sepolia",
+    "reset:all": "node scripts/reset-node.js",
+    "verify": "hardhat verify",
+    "clean": "hardhat clean"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@openzeppelin/contracts": "^5.3.0",
+    "dotenv": "^16.3.1",
+    "hardhat": "^2.19.0"
+  }
+}
