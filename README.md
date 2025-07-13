@@ -197,14 +197,46 @@ npm start
 
 ### Deploy to Sepolia Testnet
 
-1. Update your `.env` file with Sepolia configuration
-2. Get Sepolia ETH from a faucet
-3. Deploy contracts:
+**📋 Hướng dẫn chi tiết: Xem file `SEPOLIA_SETUP.md`**
 
-```bash
-cd contracts
-npx hardhat run scripts/deploy.js --network sepolia
-```
+#### Tóm tắt nhanh:
+
+1. **Chuẩn bị ví và ETH**:
+   - Tạo ví MetaMask mới cho testnet
+   - Thêm Sepolia network (Chain ID: 11155111)
+   - Lấy Sepolia ETH từ faucet: https://sepoliafaucet.com/
+
+2. **Cấu hình Private Key**:
+   ```bash
+   # Cập nhật trong file .env
+   PRIVATE_KEY=your_sepolia_private_key_here
+   ```
+
+3. **Kiểm tra cấu hình**:
+   ```bash
+   cd contracts
+   npx hardhat run scripts/check-sepolia.js --network sepolia
+   ```
+
+4. **Deploy contracts**:
+   ```bash
+   cd contracts
+   npx hardhat run scripts/deploy.js --network sepolia
+   ```
+
+5. **Chuyển đổi network nhanh**:
+   ```bash
+   # Chuyển sang Sepolia
+   node switch-network.js sepolia
+   
+   # Chuyển về Local
+   node switch-network.js local
+   
+   # Kiểm tra network hiện tại
+   node switch-network.js status
+   ```
+
+**⚠️ Lưu ý**: Dự án đã được cấu hình sẵn cho Sepolia. Chỉ cần cập nhật PRIVATE_KEY và có Sepolia ETH là có thể deploy ngay.
 
 ### Deploy Frontend
 
