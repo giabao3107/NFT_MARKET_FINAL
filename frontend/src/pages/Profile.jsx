@@ -257,7 +257,18 @@ const Profile = () => {
 
   const handleDelist = async () => {
     try {
-      await delistNFT(selectedNFT.tokenId);
+      if (!selectedNFT.listingId) {
+        toast({
+          title: 'Error',
+          description: 'NFT is not currently listed.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+      
+      await delistNFT(selectedNFT.listingId);
       toast({
         title: 'NFT Delisted Successfully!',
         description: 'Your NFT has been removed from the marketplace.',

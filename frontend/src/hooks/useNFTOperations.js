@@ -271,7 +271,7 @@ export const useNFTOperations = () => {
   }, [isConnected, buyNFT, toast]);
 
   // Delist NFT
-  const removeNFTFromSale = useCallback(async (tokenId) => {
+  const removeNFTFromSale = useCallback(async (listingId) => {
     if (!isConnected) {
       throw new Error('Please connect your wallet first');
     }
@@ -279,7 +279,7 @@ export const useNFTOperations = () => {
     try {
       setLoading('delisting', true);
       
-      await delistNFT(tokenId);
+      await delistNFT(listingId);
       
       toast({
         title: 'NFT Delisted Successfully!',

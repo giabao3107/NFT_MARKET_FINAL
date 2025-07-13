@@ -113,7 +113,7 @@ npm install
 
 ## Configuration
 
-Create a `.env` file in the `NFT_MARKET` directory:
+Create a `.env` file in the `NFT_MARKET` and `frontend` directory:
 
 ```bash
 cp .env.example .env
@@ -197,8 +197,6 @@ npm start
 
 ### Deploy to Sepolia Testnet
 
-**📋 Hướng dẫn chi tiết: Xem file `SEPOLIA_SETUP.md`**
-
 #### Tóm tắt nhanh:
 
 1. **Chuẩn bị ví và ETH**:
@@ -212,19 +210,13 @@ npm start
    PRIVATE_KEY=your_sepolia_private_key_here
    ```
 
-3. **Kiểm tra cấu hình**:
-   ```bash
-   cd contracts
-   npx hardhat run scripts/check-sepolia.js --network sepolia
-   ```
-
-4. **Deploy contracts**:
+3. **Deploy contracts**:
    ```bash
    cd contracts
    npx hardhat run scripts/deploy.js --network sepolia
    ```
 
-5. **Chuyển đổi network nhanh**:
+4. **Chuyển đổi network nhanh**:
    ```bash
    # Chuyển sang Sepolia
    node switch-network.js sepolia

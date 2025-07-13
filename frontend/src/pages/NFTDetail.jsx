@@ -102,6 +102,7 @@ const NFTDetail = () => {
   const { isOpen: isBuyOpen, onOpen: onBuyOpen, onClose: onBuyClose } = useDisclosure();
   const { isOpen: isListOpen, onOpen: onListOpen, onClose: onListClose } = useDisclosure();
   const { isOpen: isShareOpen, onOpen: onShareOpen, onClose: onShareClose } = useDisclosure();
+  const { isOpen: isRemoveOpen, onOpen: onRemoveOpen, onClose: onRemoveClose } = useDisclosure();
 
   const bg = useColorModeValue('white', 'gray.800');
   const cardBg = useColorModeValue('white', 'gray.700');
@@ -346,6 +347,21 @@ const NFTDetail = () => {
     }
   };
 
+
+
+  const handleShare = () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
+    toast({
+      title: 'Link Copied!',
+      description: 'NFT link has been copied to clipboard.',
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    });
+    onShareClose();
+  };
+
   const handleRemoveListing = async () => {
     if (!isConnected) {
       toast({
@@ -369,32 +385,19 @@ const NFTDetail = () => {
       return;
     }
 
-    setLoading(true);
     try {
-      await removeNFTFromSale(nft.tokenId);
-      toast({
-        title: 'Listing Removed Successfully!',
-        description: 'Your NFT has been removed from the marketplace.',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
-      // Refresh NFT data
-      window.location.reload();
+      setLoading(true);
+      await removeNFTFromSale(nft.listingId);
+      
+      // Refresh NFT data after successful removal
+      await loadNFT();
+      
+      onRemoveClose();
     } catch (error) {
-      console.error('Error removing listing:', error);
-      
-      let errorMessage = 'Failed to remove listing. Please try again.';
-      
-      if (error.message?.includes('User denied')) {
-        errorMessage = 'Transaction was cancelled by user.';
-      } else if (error.message?.includes('insufficient funds')) {
-        errorMessage = 'Insufficient funds for gas fees.';
-      }
-      
+      console.error('Remove listing error:', error);
       toast({
         title: 'Remove Listing Failed',
-        description: errorMessage,
+        description: error.message || 'Failed to remove NFT from marketplace',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -402,19 +405,6 @@ const NFTDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleShare = () => {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url);
-    toast({
-      title: 'Link Copied!',
-      description: 'NFT link has been copied to clipboard.',
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-    });
-    onShareClose();
   };
 
   const formatAddress = (address) => {
@@ -666,6 +656,8 @@ const NFTDetail = () => {
                             size="lg"
                             colorScheme="red"
                             flex={1}
+                            onClick={onRemoveOpen}
+                            isDisabled={!isConnected}
                           >
                             Remove Listing
                           </Button>
@@ -908,6 +900,43 @@ const NFTDetail = () => {
               </Button>
             </VStack>
           </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      {/* Remove Listing Modal */}
+      <Modal isOpen={isRemoveOpen} onClose={onRemoveClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Remove NFT Listing</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack spacing={4}>
+              <Image src={nft?.image} alt={nft?.name} boxSize="200px" objectFit="cover" borderRadius="lg" />
+              <Text fontWeight="bold" fontSize="lg">{nft?.name}</Text>
+              <Text fontSize="xl" fontWeight="bold" color="red.500">
+                Current Price: {formatPrice(nft?.price)} {nft?.currency}
+              </Text>
+              
+              <Alert status="warning">
+                <AlertIcon />
+                <Box>
+                  <AlertTitle>Remove from Marketplace</AlertTitle>
+                  <AlertDescription>
+                    Are you sure you want to remove this NFT from the marketplace? 
+                    This action will delist your NFT and it will no longer be available for purchase.
+                  </AlertDescription>
+                </Box>
+              </Alert>
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" mr={3} onClick={onRemoveClose}>
+              Cancel
+            </Button>
+            <Button colorScheme="red" onClick={handleRemoveListing} isLoading={loading}>
+              Remove Listing
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </Box>
