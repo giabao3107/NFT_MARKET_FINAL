@@ -139,8 +139,8 @@ export const useNFTOperations = () => {
       setUploadProgress(90);
       setLoading('uploading', false);
       
-      // Mint NFT
-      const tokenId = await mintNFT(metadataHash);
+      // Mint NFT - pass the metadata object, not the hash
+      const tokenId = await mintNFT(metadata);
       
       setUploadProgress(100);
       

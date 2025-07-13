@@ -1,0 +1,22 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- MetaMask fox head outline -->
+  <path d="M20.5 4.5L14 9.5L15.2 6.8L20.5 4.5Z" fill="#E17726" stroke="#E17726" stroke-width="0.5" stroke-linejoin="round"/>
+  <path d="M3.5 4.5L9.8 9.6L8.8 6.8L3.5 4.5Z" fill="#E27625" stroke="#E27625" stroke-width="0.5" stroke-linejoin="round"/>
+  <path d="M17.8 16.2L16.2 18.8L20 19.8L21 16.3L17.8 16.2Z" fill="#E27625" stroke="#E27625" stroke-width="0.5" stroke-linejoin="round"/>
+  <path d="M3 16.3L4 19.8L7.8 18.8L6.2 16.2L3 16.3Z" fill="#E27625" stroke="#E27625" stroke-width="0.5" stroke-linejoin="round"/>
+  <path d="M7.5 11.5L6.7 12.8L10.5 13L10.4 8.9L7.5 11.5Z" fill="#E27625" stroke="#E27625" stroke-width="0.5" stroke-linejoin="round"/>
+  <path d="M16.5 11.5L13.5 8.8L13.5 13L17.3 12.8L16.5 11.5Z" fill="#E27625" stroke="#E27625" stroke-width="0.5" stroke-linejoin="round"/>
+  <path d="M7.8 18.8L9.9 17.8L8.1 16.3L7.8 18.8Z" fill="#E27625" stroke="#E27625" stroke-width="0.5" stroke-linejoin="round"/>
+  <path d="M14.1 17.8L16.2 18.8L15.9 16.3L14.1 17.8Z" fill="#E27625" stroke="#E27625" stroke-width="0.5" stroke-linejoin="round"/>
+  
+  <!-- Fox face details -->
+  <path d="M16.2 18.8L14.1 17.8L14.3 19.6L14.3 20.7L16.2 18.8Z" fill="#D5BFB2" stroke="#D5BFB2" stroke-width="0.5" stroke-linejoin="round"/>
+  <path d="M7.8 18.8L9.7 20.7L9.7 19.6L9.9 17.8L7.8 18.8Z" fill="#D5BFB2" stroke="#D5BFB2" stroke-width="0.5" stroke-linejoin="round"/>
+  
+  <!-- Eyes -->
+  <circle cx="9" cy="13.5" r="0.8" fill="#233447"/>
+  <circle cx="15" cy="13.5" r="0.8" fill="#233447"/>
+  
+  <!-- Nose/mouth area -->
+  <path d="M12 15.5L11 16.5L12 17L13 16.5L12 15.5Z" fill="#CD6116" stroke="#CD6116" stroke-width="0.3" stroke-linejoin="round"/>
+</svg>

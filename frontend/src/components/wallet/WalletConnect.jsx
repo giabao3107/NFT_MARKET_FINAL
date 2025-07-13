@@ -46,6 +46,7 @@ import { useCustomToast } from '../common/Toast';
 import { formatAddress, getBlockExplorerUrl } from '../../utils/web3';
 import { copyToClipboard } from '../../utils/helpers';
 import { SUPPORTED_NETWORKS } from '../../utils/constants';
+import { WalletIcons } from '../../assets/icons';
 
 /**
  * Wallet Connect Component
@@ -224,21 +225,21 @@ const WalletModal = ({ isOpen, onClose }) => {
   const walletOptions = [
     {
       name: 'MetaMask',
-      icon: '/images/metamask.svg',
+      icon: WalletIcons.metamask,
       description: 'Connect using browser wallet',
       connector: 'metamask',
       installed: typeof window !== 'undefined' && window.ethereum?.isMetaMask
     },
     {
       name: 'WalletConnect',
-      icon: '/images/walletconnect.svg',
+      icon: WalletIcons.connect,
       description: 'Connect using WalletConnect',
       connector: 'walletconnect',
       installed: true
     },
     {
       name: 'Coinbase Wallet',
-      icon: '/images/coinbase.svg',
+      icon: WalletIcons.coinbase,
       description: 'Connect using Coinbase Wallet',
       connector: 'coinbase',
       installed: typeof window !== 'undefined' && window.ethereum?.isCoinbaseWallet

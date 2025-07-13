@@ -87,7 +87,7 @@ export function Web3Provider({ children }) {
   };
 
   // Connect to MetaMask
-  const connectWallet = async () => {
+  const connectWallet = async (connector = 'metamask') => {
     if (!isMetaMaskInstalled()) {
       dispatch({
         type: WEB3_ACTIONS.SET_ERROR,
@@ -106,8 +106,20 @@ export function Web3Provider({ children }) {
     try {
       dispatch({ type: WEB3_ACTIONS.SET_CONNECTING, payload: true });
 
-      // Request account access
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      // Handle different wallet connectors
+      if (connector === 'metamask' || !connector) {
+        if (!isMetaMaskInstalled()) {
+          throw new Error('MetaMask is not installed');
+        }
+        // Request account access
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+      } else if (connector === 'walletconnect') {
+        // WalletConnect implementation would go here
+        throw new Error('WalletConnect not implemented yet');
+      } else if (connector === 'coinbase') {
+        // Coinbase Wallet implementation would go here
+        throw new Error('Coinbase Wallet not implemented yet');
+      }
 
       // Create provider and signer
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -152,6 +164,8 @@ export function Web3Provider({ children }) {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      dispatch({ type: WEB3_ACTIONS.SET_CONNECTING, payload: false });
     }
   };
 

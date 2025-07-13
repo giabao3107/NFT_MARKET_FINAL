@@ -4,6 +4,7 @@ import { safeBase64Encode } from './encoding';
 
 const PINATA_API_KEY = process.env.REACT_APP_PINATA_API_KEY;
 const PINATA_SECRET_KEY = process.env.REACT_APP_PINATA_SECRET_KEY;
+const PINATA_JWT = process.env.REACT_APP_PINATA_JWT;
 const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY || 'https://gray-reasonable-shrew-916.mypinata.cloud/ipfs';
 const FALLBACK_GATEWAY = 'https://gray-reasonable-shrew-916.mypinata.cloud/ipfs';
 
@@ -15,10 +16,9 @@ const FALLBACK_GATEWAY = 'https://gray-reasonable-shrew-916.mypinata.cloud/ipfs'
  */
 export const uploadFileToIPFS = async (file, name = null) => {
   try {
-    if (!PINATA_API_KEY || !PINATA_SECRET_KEY) {
-      // Fallback to mock upload for development
-      console.warn('Pinata credentials not found, using mock upload');
-      return mockIPFSUpload(file);
+    // Check for JWT first (preferred), then fallback to API key/secret
+    if (!PINATA_JWT && (!PINATA_API_KEY || !PINATA_SECRET_KEY)) {
+      throw new Error('Pinata credentials not configured. Please set REACT_APP_PINATA_JWT or both REACT_APP_PINATA_API_KEY and REACT_APP_PINATA_SECRET_KEY in your .env file.');
     }
 
     const formData = new FormData();
@@ -28,12 +28,17 @@ export const uploadFileToIPFS = async (file, name = null) => {
       formData.append('pinataMetadata', JSON.stringify({ name }));
     }
 
+    // Use JWT if available, otherwise use API key/secret
+    const headers = PINATA_JWT 
+      ? { 'Authorization': `Bearer ${PINATA_JWT}` }
+      : {
+          'pinata_api_key': PINATA_API_KEY,
+          'pinata_secret_api_key': PINATA_SECRET_KEY,
+        };
+
     const response = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
       method: 'POST',
-      headers: {
-        'pinata_api_key': PINATA_API_KEY,
-        'pinata_secret_api_key': PINATA_SECRET_KEY,
-      },
+      headers,
       body: formData,
     });
 
@@ -57,10 +62,9 @@ export const uploadFileToIPFS = async (file, name = null) => {
  */
 export const uploadJSONToIPFS = async (metadata, name = null) => {
   try {
-    if (!PINATA_API_KEY || !PINATA_SECRET_KEY) {
-      // Fallback to mock upload for development
-      console.warn('Pinata credentials not found, using mock upload');
-      return mockIPFSUpload(metadata);
+    // Check for JWT first (preferred), then fallback to API key/secret
+    if (!PINATA_JWT && (!PINATA_API_KEY || !PINATA_SECRET_KEY)) {
+      throw new Error('Pinata credentials not configured. Please set REACT_APP_PINATA_JWT or both REACT_APP_PINATA_API_KEY and REACT_APP_PINATA_SECRET_KEY in your .env file.');
     }
 
     const data = {
@@ -70,13 +74,21 @@ export const uploadJSONToIPFS = async (metadata, name = null) => {
       },
     };
 
+    // Use JWT if available, otherwise use API key/secret
+    const headers = PINATA_JWT 
+      ? {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${PINATA_JWT}`
+        }
+      : {
+          'Content-Type': 'application/json',
+          'pinata_api_key': PINATA_API_KEY,
+          'pinata_secret_api_key': PINATA_SECRET_KEY,
+        };
+
     const response = await fetch('https://api.pinata.cloud/pinning/pinJSONToIPFS', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'pinata_api_key': PINATA_API_KEY,
-        'pinata_secret_api_key': PINATA_SECRET_KEY,
-      },
+      headers,
       body: JSON.stringify(data),
     });
 
@@ -147,10 +159,9 @@ export const getIPFSUrl = (hash) => {
 export const convertIpfsToHttp = (ipfsUrl) => {
   if (!ipfsUrl) return null;
   
-  // Handle placeholder images - don't convert to IPFS
-  if (ipfsUrl.includes('placeholder-nft.svg') || ipfsUrl.includes('placeholder')) {
-    // Return as relative path for local assets
-    return ipfsUrl.startsWith('/') ? ipfsUrl : `/${ipfsUrl}`;
+  // Skip null or empty URLs
+  if (!ipfsUrl) {
+    return null;
   }
   
   // Handle IPFS protocol URLs
@@ -194,9 +205,9 @@ export const convertIpfsToHttp = (ipfsUrl) => {
 export const getFallbackUrls = (ipfsUrl) => {
   if (!ipfsUrl) return [];
   
-  // Handle placeholder images - return as local path
-  if (ipfsUrl.includes('placeholder-nft.svg') || ipfsUrl.includes('placeholder')) {
-    return [ipfsUrl.startsWith('/') ? ipfsUrl : `/${ipfsUrl}`];
+  // Skip null or empty URLs
+  if (!ipfsUrl) {
+    return [];
   }
   
   // Handle other relative paths that start with / (but not placeholders)
@@ -281,22 +292,7 @@ export const uploadNFTToIPFS = async (nftData) => {
   }
 };
 
-/**
- * Mock IPFS upload for development/testing
- * @param {File|Object} data - Data to "upload"
- * @returns {Promise<string>} - Mock IPFS hash
- */
-const mockIPFSUpload = async (data) => {
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  // Generate a mock hash
-  const mockHash = 'Qm' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-  
-  console.log('Mock IPFS upload:', { data, hash: mockHash });
-  
-  return mockHash;
-};
+
 
 /**
  * Validate file for IPFS upload
@@ -356,16 +352,20 @@ export const extractIPFSHash = (url) => {
  */
 export const checkIPFSAvailability = async () => {
   try {
-    if (!PINATA_API_KEY || !PINATA_SECRET_KEY) {
+    if (!PINATA_JWT && (!PINATA_API_KEY || !PINATA_SECRET_KEY)) {
       return false;
     }
     
+    const headers = PINATA_JWT 
+      ? { 'Authorization': `Bearer ${PINATA_JWT}` }
+      : {
+          'pinata_api_key': PINATA_API_KEY,
+          'pinata_secret_api_key': PINATA_SECRET_KEY,
+        };
+    
     const response = await fetch('https://api.pinata.cloud/data/testAuthentication', {
       method: 'GET',
-      headers: {
-        'pinata_api_key': PINATA_API_KEY,
-        'pinata_secret_api_key': PINATA_SECRET_KEY,
-      },
+      headers,
     });
     
     return response.ok;
@@ -382,16 +382,20 @@ export const checkIPFSAvailability = async () => {
  */
 export const getIPFSFileInfo = async (hash) => {
   try {
-    if (!PINATA_API_KEY || !PINATA_SECRET_KEY) {
+    if (!PINATA_JWT && (!PINATA_API_KEY || !PINATA_SECRET_KEY)) {
       throw new Error('Pinata credentials not available');
     }
     
+    const headers = PINATA_JWT 
+      ? { 'Authorization': `Bearer ${PINATA_JWT}` }
+      : {
+          'pinata_api_key': PINATA_API_KEY,
+          'pinata_secret_api_key': PINATA_SECRET_KEY,
+        };
+    
     const response = await fetch(`https://api.pinata.cloud/data/pinList?hashContains=${hash}`, {
       method: 'GET',
-      headers: {
-        'pinata_api_key': PINATA_API_KEY,
-        'pinata_secret_api_key': PINATA_SECRET_KEY,
-      },
+      headers,
     });
     
     if (!response.ok) {

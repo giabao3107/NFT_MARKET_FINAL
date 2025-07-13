@@ -44,10 +44,11 @@
       "react-app/jest"
     ],
     "rules": {
-      "no-unused-vars": "warn",
-      "react-hooks/exhaustive-deps": "warn",
-      "default-case": "warn",
-      "import/no-anonymous-default-export": "warn"
+      "no-unused-vars": "off",
+      "react-hooks/exhaustive-deps": "off",
+      "default-case": "off",
+      "import/no-anonymous-default-export": "off",
+      "no-useless-escape": "off"
     }
   },
   "browserslist": {

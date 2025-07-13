@@ -74,7 +74,7 @@ export function parseMetadataDataURI(dataURI) {
     
     return {
       ...metadata,
-      image: metadata.image || '/placeholder-nft.svg',
+      image: metadata.image || null,
     };
   } catch (error) {
     console.error('Error parsing metadata data URI:', error);

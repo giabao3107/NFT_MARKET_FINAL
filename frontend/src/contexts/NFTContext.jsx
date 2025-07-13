@@ -166,7 +166,7 @@ export function NFTProvider({ children }) {
       }
 
       // Handle IPFS URIs
-      const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY || 'https://ipfs.io/ipfs';
+      const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY || 'https://gray-reasonable-shrew-916.mypinata.cloud/ipfs';
       let ipfsUrl;
       
       if (tokenURI.startsWith('ipfs://')) {
@@ -191,10 +191,19 @@ export function NFTProvider({ children }) {
       }
       
       const metadata = await response.json();
+      
+      // Convert image URL properly using the convertIpfsToHttp function
+      let imageUrl = metadata.image;
+      if (imageUrl) {
+        // Import the conversion function
+        const { convertIpfsToHttp } = await import('../utils/ipfs');
+        imageUrl = convertIpfsToHttp(imageUrl);
+      }
+      
       return {
         name: metadata.name || 'Unnamed NFT',
         description: metadata.description || 'No description available',
-        image: metadata.image?.replace('ipfs://', `${IPFS_GATEWAY}/`) || '/placeholder-nft.svg',
+        image: imageUrl,
         attributes: metadata.attributes || [],
         ...metadata,
       };
@@ -649,7 +658,7 @@ export function NFTProvider({ children }) {
             let metadata = {
               name: `NFT #${listing.tokenId}`,
               description: 'No description available',
-              image: '/placeholder-nft.svg',
+              image: null,
             };
             
             // Only try to fetch metadata if tokenURI is valid
@@ -681,7 +690,7 @@ export function NFTProvider({ children }) {
               tokenURI: '',
               name: `Listing #${listingId}`,
               description: 'Error loading listing data',
-              image: '/placeholder-nft.svg',
+              image: null,
             };
           }
         })
@@ -736,7 +745,7 @@ export function NFTProvider({ children }) {
             let metadata = {
               name: `NFT #${tokenId}`,
               description: 'No description available',
-              image: '/placeholder-nft.svg',
+              image: null,
             };
             
             // Only try to fetch metadata if tokenURI is valid
@@ -768,7 +777,7 @@ export function NFTProvider({ children }) {
               royaltyPercentage: 0,
               name: `NFT #${tokenId}`,
               description: 'Error loading NFT data',
-              image: '/placeholder-nft.svg',
+              image: null,
             };
           }
         })
@@ -840,7 +849,7 @@ export function NFTProvider({ children }) {
             let metadata = {
               name: `NFT #${tokenId}`,
               description: 'No description available',
-              image: '/placeholder-nft.svg',
+              image: null,
             };
             
             // Only try to fetch metadata if tokenURI is valid
@@ -878,7 +887,7 @@ export function NFTProvider({ children }) {
               listingId: null,
               name: `NFT #${tokenId}`,
               description: 'Error loading NFT data',
-              image: '/placeholder-nft.svg',
+              image: null,
             };
           }
         })

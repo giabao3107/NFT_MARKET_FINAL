@@ -133,10 +133,10 @@ const NFTCard = ({
   
   const getImageSrc = () => {
     if (!nft.image) return null; // No placeholder, return null if no image
-    if (nft.image.startsWith('ipfs://')) {
-      return `${IPFS_GATEWAY}/${nft.image.replace('ipfs://', '')}`;
-    }
-    return nft.image;
+    
+    // Use the convertIpfsToHttp function for proper IPFS URL conversion
+    const { convertIpfsToHttp } = require('../../utils/ipfs');
+    return convertIpfsToHttp(nft.image);
   };
   
   // Render different variants

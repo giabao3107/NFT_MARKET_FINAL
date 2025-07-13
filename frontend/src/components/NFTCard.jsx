@@ -128,7 +128,7 @@ const NFTCard = ({ nft, showActions = true, onLike, onBuy }) => {
             </Box>
           ) : (
             <Image
-              src={nft.image}
+              src={nft.image ? require('../utils/ipfs').convertIpfsToHttp(nft.image) : null}
               alt={nft.name}
               w="full"
               h="250px"

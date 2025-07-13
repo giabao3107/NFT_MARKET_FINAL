@@ -1,7 +1,7 @@
 // Application constants and configuration
 
 // IPFS Configuration
-export const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY || 'https://gray-reasonable-shrew-916.mypinata.cloud/ipfs/';
+export const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY || 'https://gray-reasonable-shrew-916.mypinata.cloud/ipfs';
 
 // Blockchain Explorer URLs
 export const ETHERSCAN_URL = {

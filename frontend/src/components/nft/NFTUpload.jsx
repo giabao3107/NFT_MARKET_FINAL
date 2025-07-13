@@ -195,17 +195,25 @@ const NFTUpload = ({ onSuccess, onCancel, ...props }) => {
     setUploadProgress(0);
     
     try {
-      // Simulate upload progress
-      for (let i = 0; i <= 100; i += 10) {
-        setUploadProgress(i);
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
+      // Import IPFS upload function
+      const { uploadFileToIPFS } = await import('../../utils/ipfs');
       
-      // For development, return a placeholder image URL
-      return '/placeholder-nft.svg';
+      // Simulate upload progress
+      const progressInterval = setInterval(() => {
+        setUploadProgress(prev => Math.min(prev + 10, 90));
+      }, 200);
+      
+      // Upload file to IPFS
+      const ipfsHash = await uploadFileToIPFS(formData.image, formData.name);
+      
+      clearInterval(progressInterval);
+      setUploadProgress(100);
+      
+      // Return IPFS URL
+      return `ipfs://${ipfsHash}`;
     } catch (error) {
       console.error('File upload error:', error);
-      throw new Error('Failed to upload file');
+      throw new Error('Failed to upload file to IPFS');
     } finally {
       setIsUploading(false);
     }

@@ -26,7 +26,10 @@ const ImageWithFallback = ({
 
   useEffect(() => {
     if (src) {
-      setCurrentSrc(src);
+      // Convert IPFS URLs to HTTP URLs before setting
+      const { convertIpfsToHttp } = require('../utils/ipfs');
+      const convertedSrc = convertIpfsToHttp(src);
+      setCurrentSrc(convertedSrc);
       setFallbackUrls(getFallbackUrls(src));
       setIsLoading(true);
       setHasError(false);

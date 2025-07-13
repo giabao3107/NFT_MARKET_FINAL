@@ -113,10 +113,18 @@ const Create = () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
         setUploadProgress(50);
 
+        // First upload the image to IPFS
+        let imageUrl = '';
+        if (values.image) {
+          const { uploadFileToIPFS } = await import('../utils/ipfs');
+          const imageHash = await uploadFileToIPFS(values.image, values.name);
+          imageUrl = `ipfs://${imageHash}`;
+        }
+
         const metadata = {
           name: values.name,
           description: values.description,
-          image: '', // No placeholder - will be set when image is uploaded
+          image: imageUrl, // Use the uploaded image URL
           attributes: values.attributes,
           category: values.category,
         };

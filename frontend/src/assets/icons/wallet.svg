@@ -1,0 +1,15 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Wallet body -->
+  <rect x="2" y="7" width="20" height="11" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Wallet flap -->
+  <path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Card slots -->
+  <rect x="5" y="10" width="14" height="1.5" rx="0.5" fill="currentColor" opacity="0.2"/>
+  <rect x="5" y="12" width="10" height="1.5" rx="0.5" fill="currentColor" opacity="0.3"/>
+  
+  <!-- Wallet clasp/button -->
+  <circle cx="18" cy="13" r="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  <circle cx="18" cy="13" r="0.5" fill="currentColor"/>
+</svg>

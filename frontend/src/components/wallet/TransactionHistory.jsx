@@ -758,7 +758,7 @@ const fetchUserTransactions = async (account, filters, contracts) => {
         nft: {
           tokenId: Number(event.args[2]),
           name: `NFT #${event.args[2]}`,
-          image: '/placeholder-nft.svg'
+          image: null
         }
       });
     }
@@ -779,7 +779,7 @@ const fetchUserTransactions = async (account, filters, contracts) => {
         nft: {
           tokenId: Number(event.args[2]),
           name: `NFT #${event.args[2]}`,
-          image: '/placeholder-nft.svg'
+          image: null
         }
       });
     }
