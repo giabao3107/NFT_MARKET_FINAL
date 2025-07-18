@@ -1,11 +1,12 @@
 {
   "version": 2,
   "name": "nft-marketplace",
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/build",
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "build",
   "installCommand": "npm install",
-  "devCommand": "cd frontend && npm start",
-  "framework": null,
+  "devCommand": "npm start",
+  "framework": "create-react-app",
+  "rootDirectory": "frontend",
   "rewrites": [
     {
       "source": "/(.*)",
