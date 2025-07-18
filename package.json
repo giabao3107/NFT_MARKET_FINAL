@@ -1,0 +1,34 @@
+{
+  "name": "nft-marketplace",
+  "version": "1.0.0",
+  "description": "NFT Marketplace with React frontend and Solidity smart contracts",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd frontend && npm start",
+    "dev": "cd frontend && npm run dev",
+    "install-frontend": "cd frontend && npm install",
+    "install-contracts": "cd contracts && npm install",
+    "install-all": "npm run install-frontend && npm run install-contracts",
+    "deploy-contracts": "cd contracts && npm run deploy",
+    "test-contracts": "cd contracts && npm test"
+  },
+  "keywords": [
+    "nft",
+    "marketplace",
+    "ethereum",
+    "react",
+    "solidity",
+    "web3"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "your-repository-url"
+  }
+}
